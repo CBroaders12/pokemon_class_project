@@ -7,10 +7,12 @@ class Trainer:
         self.current_pokemon = current_pokemon #integer that is the index of the current pokemon from the team list
     
     def __repr__(self):
+        
         return self.name + " has " + str(len(self.team)) + " pokemon and " + str(self.num_potions) + " potions.\nHis current pokemon is " + str(self.team[self.current_pokemon])
     
     #Method to add pokemon the the team
     def add_pokemon(self, pokemon):
+        
         if len(self.team) < 6:
             self.team.append(pokemon)
             print("You caught a(n) " + pokemon.name + '.')
@@ -18,19 +20,21 @@ class Trainer:
             print("Your team is already full! You'll need to release a pokemon if you want to catch " + pokemon)
     
     def use_potion(self, pokemon):
-        if self.num_potions > 0:
+        if self.num_potions > 0 and pokemon.current_hp < pokemon.max_hp and pokemon.current_hp > 0:
             pokemon.heal(20)
             print("You use a potion to heal {pokemon}.".format(pokemon=pokemon.name))
+        
+
 
 class Pokemon:
 
     def __init__(self, name, level, type, max_hp, current_hp, is_knocked_out):
-        self.name = name
-        self.level = level
-        self.type = type
-        self.max_hp = max_hp
-        self.current_hp = current_hp
-        self.is_knocked_out = is_knocked_out
+        self.name = name                        #string with the name of the pokemon
+        self.level = level                      #integer with the pokemon's level
+        self.type = type                        #string with the pokemon's type
+        self.max_hp = max_hp                    #integer with the pokemon's max health
+        self.current_hp = current_hp            #integer with the pokemon's current health
+        self.is_knocked_out = is_knocked_out    #boolean describing whether the pokemon is knocked out
     
     def __repr__(self):
         return self.name + ": lvl "+ str(self.level) + ", " + self.type + " type, " + str(self.current_hp) + "/" + str(self.max_hp) + " HP"
@@ -50,7 +54,8 @@ class Pokemon:
     
     def heal(self, health):
         
-        if self.current_hp > 0 and self.current_hp < self.max_hp:
+        #Check that the pokemon can be healed
+        if not self.is_knocked_out and self.current_hp < self.max_hp:
             self.current_hp += health
             
             if self.current_hp > self.max_hp: #Can't heal above max HP
@@ -58,17 +63,21 @@ class Pokemon:
            
             print("{name} healed and now has {hp}/{max} HP!".format(name=self.name,hp=self.current_hp,max=self.max_hp))
         
-        elif self.current_hp == self.max_hp: #Can't heal if they are already at max HP
+        #Can't heal if they are already at max HP
+        elif self.current_hp == self.max_hp:
            print("{name} doesn't need to heal, they are already at max HP!".format(name=self.name))
         
-        else: #Can't heal a Pokemon who is knocked out
+        #Can't heal a Pokemon who is knocked out
+        else: 
             print("{name} is knocked out! You'll need to revive them before they can heal.".format(name=self.name))
 
-    def revive(self):
+    def revive(self, health):
+        
         if self.is_knocked_out:
-            self.current_hp = self.max_hp
-            print("{name} is no longer knocked out and is back to full HP!".format(name=self.name))
-        else:
+            self.current_hp = health
+            print("{name} is no longer knocked out and is back to {health}!".format(name=self.name, health=health))
+        
+        else: #
             print("{name} isn't knocked out! Save the revive for someone who needs it.".format(name=self.name))
             
     def attack(self, other_pokemon):
@@ -95,6 +104,7 @@ class Pokemon:
             "Steel": ["Ice", "Rock", "Fairy"],
             "Fairy": ["Fighting", "Dragon", "Dark"]
             }
+        
         disadvantage = {
             "Normal": ["Rock", "Steel"],
             "Fire": ["Fire", "Water", "Rock", "Dragon"], 
@@ -115,6 +125,7 @@ class Pokemon:
             "Steel": ["Fire", "Water", "Electric", "Steel"],
             "Fairy": ["Fire", "Fighting", "Dark"]
             }
+        
         immune = {
             "Normal": ["Ghost"],
             "Electric": ["Ground"],
@@ -153,8 +164,12 @@ crocanaw = Pokemon("Crocanaw", 12, "Water", 62, 62, False)
 quilava = Pokemon("Quilava", 14, "Fire", 60, 60, False)
 miltank = Pokemon("Miltank", 15, "Normal", 79, 79, False)
 gastly = Pokemon("Gastly", 9, "Ghost", 50, 50 , False)
+pikachu = Pokemon("Pikachu", 12, "Electric", 43, 43, False)
+sandshrew = Pokemon("Sandshrew", 12, "Ground", 44, 44, False)
 
 #Add trainers here
 ash = Trainer("Ash", [bayleef, crocanaw, quilava, miltank, gastly], 5, 0)
 
 #Test functionality here
+pikachu.attack(sandshrew)
+sandshrew.attack(pikachu)
