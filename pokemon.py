@@ -115,6 +115,16 @@ class Pokemon:
             "Steel": ["Fire", "Water", "Electric", "Steel"],
             "Fairy": ["Fire", "Fighting", "Dark"]
             }
+        immune = {
+            "Normal": ["Ghost"],
+            "Electric": ["Ground"],
+            "Fighting": ["Ghost"],
+            "Poison": ["Steel"],
+            "Ground": ["Flying"],
+            "Psychic": ["Dark"],
+            "Ghost": ["Normal"],
+            "Dragon": ["Fairy"]
+        }
             
         print("{we} attacks {them}!".format(we=self.name,them=other_pokemon.name))
         
@@ -127,6 +137,10 @@ class Pokemon:
         elif other_pokemon.type in disadvantage[self.type]:
             print("It's not very effective.")
             other_pokemon.take_damage(self.level//2)
+        
+        #The target's type is immune to the attacking pokemon's type
+        elif other_pokemon.type in immune[self.type]:
+            print("{attacking}'s attack has no effect on {target}!".format(attacking=self.name), target=other_pokemon.name)
         
         #Attacking pokemon has no type advantage/disadvantage
         else:
