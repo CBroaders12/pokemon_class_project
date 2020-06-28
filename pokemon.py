@@ -1,20 +1,20 @@
 class Trainer:
 
     def __init__(self, name, team, num_potions, current_pokemon):
-        self.name = name #A string with the trainer's name
-        self.team = team #A list with the trainers pokemon
-        self.num_potions = num_potions #An integer with the number of potions the trainer has
-        self.current_pokemon = current_pokemon #An integer that is the index of the current pokemon from the team list
+        self.name = name #string with the trainer's name
+        self.team = team #list with the trainers pokemon
+        self.num_potions = num_potions #integer with the number of potions the trainer has
+        self.current_pokemon = current_pokemon #integer that is the index of the current pokemon from the team list
     
     def __repr__(self):
         return self.name + " has " + str(len(self.team)) + " pokemon and " + str(self.num_potions) + " potions.\nHis current pokemon is " + str(self.team[self.current_pokemon])
     
-    #Easier method to add pokemon the the team
+    #Method to add pokemon the the team
     def add_pokemon(self, pokemon):
         if len(self.team) < 6:
             self.team.append(pokemon)
             print("You caught a(n) " + pokemon.name + '.')
-        else:
+        else: #Trainer's team already has 6 pokemon
             print("Your team is already full! You'll need to release a pokemon if you want to catch " + pokemon)
     
     def use_potion(self, pokemon):
@@ -140,19 +140,21 @@ class Pokemon:
         
         #The target's type is immune to the attacking pokemon's type
         elif other_pokemon.type in immune[self.type]:
-            print("{attacking}'s attack has no effect on {target}!".format(attacking=self.name), target=other_pokemon.name)
+            print("{attacking}'s attack has no effect on {target}!".format(attacking=self.name, target=other_pokemon.name))
         
         #Attacking pokemon has no type advantage/disadvantage
         else:
             other_pokemon.take_damage(self.level)
 
+
+#Initialize pokemon here
 bayleef = Pokemon("Bayleef", 16, "Grass", 57, 57, False)
 crocanaw = Pokemon("Crocanaw", 12, "Water", 62, 62, False)
 quilava = Pokemon("Quilava", 14, "Fire", 60, 60, False)
+miltank = Pokemon("Miltank", 15, "Normal", 79, 79, False)
+gastly = Pokemon("Gastly", 9, "Ghost", 50, 50 , False)
 
-conor = Trainer("Conor", [bayleef, crocanaw], 5, 0)
+#Add trainers here
+ash = Trainer("Ash", [bayleef, crocanaw, quilava, miltank, gastly], 5, 0)
 
-conor.add_pokemon(quilava)
-bayleef.take_damage(20)
-
-conor.use_potion(bayleef)
+#Test functionality here
