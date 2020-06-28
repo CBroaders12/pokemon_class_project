@@ -16,6 +16,7 @@ class Trainer:
         if len(self.team) < 6:
             self.team.append(pokemon)
             print("You caught a(n) " + pokemon.name + '.')
+        
         else: #Trainer's team already has 6 pokemon
             print("Your team is already full! You'll need to release a pokemon if you want to catch " + pokemon)
     
