@@ -20,9 +20,25 @@ class Trainer:
             print("Your team is already full! You'll need to release a pokemon if you want to catch " + pokemon)
     
     def use_potion(self, pokemon):
-        if self.num_potions > 0 and pokemon.current_hp < pokemon.max_hp and pokemon.current_hp > 0:
+        
+        #Only heal conscious pokemon
+        if pokemon.is_knocked_out:
+            print("Potions cannot revive KOed pokemon. Use a revive instead.")
+        
+        #Need potions to heal
+        elif self.num_potions == 0:
+            print("You're out of potions!")
+
+        #Don't heal if the pokemon is at full health
+        elif pokemon.current_hp == pokemon.max_hp:
+            print("{name} is already at full health. Save the potion for when you need it!".format(name=pokemon.name))
+            
+        else:
+            print("You use a potion to heal {pokemon}.\n You now have {number} potions.".format(pokemon=pokemon.name, number=self.num_potions))
             pokemon.heal(20)
-            print("You use a potion to heal {pokemon}.".format(pokemon=pokemon.name))
+            self.num_potions -= 1 #Remove the used potion
+        
+
         
 
 
@@ -75,7 +91,7 @@ class Pokemon:
         
         if self.is_knocked_out:
             self.current_hp = health
-            print("{name} is no longer knocked out and is back to {health}!".format(name=self.name, health=health))
+            print("{name} is no longer knocked out and is back to {health} HP!".format(name=self.name, health=health))
         
         else: #
             print("{name} isn't knocked out! Save the revive for someone who needs it.".format(name=self.name))
@@ -167,9 +183,10 @@ gastly = Pokemon("Gastly", 9, "Ghost", 50, 50 , False)
 pikachu = Pokemon("Pikachu", 12, "Electric", 43, 43, False)
 sandshrew = Pokemon("Sandshrew", 12, "Ground", 44, 44, False)
 
+bayleef.take_damage(10)
+
 #Add trainers here
 ash = Trainer("Ash", [bayleef, crocanaw, quilava, miltank, gastly], 5, 0)
 
 #Test functionality here
-pikachu.attack(sandshrew)
-sandshrew.attack(pikachu)
+ash.use_potion(bayleef)
