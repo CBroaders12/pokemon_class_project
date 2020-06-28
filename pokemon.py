@@ -19,8 +19,11 @@ class Trainer:
         else: #Trainer's team already has 6 pokemon
             print("Your team is already full! You'll need to release a pokemon if you want to catch " + pokemon)
     
-    def use_potion(self, pokemon):
+    def use_potion(self):
         
+        #This method heals the currently active pokemon
+        pokemon = self.team[self.current_pokemon]
+
         #Only heal conscious pokemon
         if pokemon.is_knocked_out:
             print("Potions cannot revive KOed pokemon. Use a revive instead.")
@@ -34,13 +37,10 @@ class Trainer:
             print("{name} is already at full health. Save the potion for when you need it!".format(name=pokemon.name))
             
         else:
-            print("You use a potion to heal {pokemon}.\n You now have {number} potions.".format(pokemon=pokemon.name, number=self.num_potions))
+            print("You use a potion to heal {pokemon}.".format(pokemon=pokemon.name))
             pokemon.heal(20)
             self.num_potions -= 1 #Remove the used potion
-        
-
-        
-
+            print("You have {number} potions left.".format(number=self.num_potions))
 
 class Pokemon:
 
@@ -183,10 +183,8 @@ gastly = Pokemon("Gastly", 9, "Ghost", 50, 50 , False)
 pikachu = Pokemon("Pikachu", 12, "Electric", 43, 43, False)
 sandshrew = Pokemon("Sandshrew", 12, "Ground", 44, 44, False)
 
-bayleef.take_damage(10)
-
 #Add trainers here
 ash = Trainer("Ash", [bayleef, crocanaw, quilava, miltank, gastly], 5, 0)
 
 #Test functionality here
-ash.use_potion(bayleef)
+ash.use_potion()
