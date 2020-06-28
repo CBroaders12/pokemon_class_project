@@ -1,10 +1,10 @@
 class Trainer:
 
     def __init__(self, name, team, num_potions, current_pokemon):
-        self.name = name #string with the trainer's name
-        self.team = team #list with the trainers pokemon
-        self.num_potions = num_potions #integer with the number of potions the trainer has
-        self.current_pokemon = current_pokemon #integer that is the index of the current pokemon from the team list
+        self.name = name                        #string with the trainer's name
+        self.team = team                        #list with the trainers pokemon
+        self.num_potions = num_potions          #integer with the number of potions the trainer has
+        self.current_pokemon = current_pokemon  #integer that is the index of the current pokemon from the team list
     
     def __repr__(self):
         
@@ -41,6 +41,19 @@ class Trainer:
             pokemon.heal(20)
             self.num_potions -= 1 #Remove the used potion
             print("You have {number} potions left.".format(number=self.num_potions))
+    
+    def use_revive(self):
+
+        #This method revives the currently active pokemon
+        pokemon = self.team[self.current_pokemon]
+
+        #Revive the pokemon for half its max health
+        if pokemon.is_knocked_out:
+            print("You revived {pokemon}.".format(pokemon=pokemon.name))
+            pokemon.revive(pokemon.max_hp//2)
+        
+        else:
+            print("{pokemon} doesn't need to be revived.".format(pokemon=pokemon.name))
 
 class Pokemon:
 
@@ -185,6 +198,7 @@ sandshrew = Pokemon("Sandshrew", 12, "Ground", 44, 44, False)
 
 #Add trainers here
 ash = Trainer("Ash", [bayleef, crocanaw, quilava, miltank, gastly], 5, 0)
+#bayleef.take_damage(bayleef.max_hp)
 
 #Test functionality here
-ash.use_potion()
+ash.use_revive()
